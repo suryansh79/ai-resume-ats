@@ -7,17 +7,17 @@ CORS(app)
 
 @app.route("/api/resume/upload", methods=["POST"])
 def upload_resume():
-    # Check if file is present
+   
     if "resume" not in request.files:
         return jsonify({"error": "No file uploaded"}), 400
 
     file = request.files["resume"]
 
-    # Allow only PDF files
+   
     if not file.filename.lower().endswith(".pdf"):
         return jsonify({"error": "Only PDF files are allowed"}), 400
 
-    # Extract text from resume
+   
     text = extract_resume_text(file)
 
     return jsonify({

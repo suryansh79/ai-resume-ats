@@ -1,0 +1,33 @@
+{
+  "programming_languages": [
+    "python",
+    "java",
+    "c",
+    "c++",
+    "javascript",
+    "sql"
+  ],
+  "frameworks": [
+    "flask",
+    "django",
+    "react",
+    "node",
+    "express"
+  ],
+  "databases": [
+    "mysql",
+    "postgresql",
+    "mongodb",
+    "sqlite"
+  ],
+  "cloud": [
+    "aws",
+    "azure",
+    "gcp"
+  ],
+  "tools": [
+    "git",
+    "docker",
+    "kubernetes"
+  ]
+}

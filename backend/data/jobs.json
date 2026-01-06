@@ -1,0 +1,14 @@
+{
+  "backend_developer": {
+    "required_skills": ["python", "sql", "flask", "git"],
+    "optional_skills": ["docker", "aws"]
+  },
+  "frontend_developer": {
+    "required_skills": ["javascript", "react", "html", "css"],
+    "optional_skills": ["node", "git"]
+  },
+  "fullstack_developer": {
+    "required_skills": ["python", "javascript", "react", "sql"],
+    "optional_skills": ["docker", "aws", "git"]
+  }
+}

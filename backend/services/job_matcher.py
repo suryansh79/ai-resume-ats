@@ -10,7 +10,6 @@ def load_jobs():
 
 
 def match_resume_to_job(resume_skills, job_role):
-    
     jobs = load_jobs()
 
     if job_role not in jobs:
@@ -26,14 +25,38 @@ def match_resume_to_job(resume_skills, job_role):
     matched_optional = resume_skills & optional_skills
     missing_required = required_skills - resume_skills
 
-    match_percentage = round(
-        (len(matched_required) / len(required_skills)) * 100, 2
-    )
+    # Weighted scoring
+    required_score = len(matched_required) / len(required_skills) if required_skills else 0
+    optional_score = len(matched_optional) / len(optional_skills) if optional_skills else 0
+
+    final_score = round((required_score * 0.8 + optional_score * 0.2) * 100, 2)
+
+    # Hiring signal
+    if final_score >= 75:
+        verdict = "Strong Match"
+    elif final_score >= 50:
+        verdict = "Moderate Match"
+    else:
+        verdict = "Weak Match"
 
     return {
         "job_role": job_role,
-        "match_percentage": match_percentage,
-        "matched_required_skills": sorted(list(matched_required)),
-        "matched_optional_skills": sorted(list(matched_optional)),
-        "missing_required_skills": sorted(list(missing_required))
+        "match_percentage": final_score,
+        "verdict": verdict,
+        "matched_required_skills": sorted(matched_required),
+        "matched_optional_skills": sorted(matched_optional),
+        "missing_required_skills": sorted(missing_required)
     }
+def rank_resume_against_all_jobs(resume_skills):
+    jobs = load_jobs()
+    results = []
+
+    for job_role in jobs.keys():
+        match = match_resume_to_job(resume_skills, job_role)
+        results.append(match)
+
+    # Sort by highest match percentage
+    results.sort(key=lambda x: x["match_percentage"], reverse=True)
+
+    return results
+

@@ -2,6 +2,8 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from services.resume_service import analyze_resume
 from services.job_matcher import match_resume_to_job
+from services.job_matcher import rank_resume_against_all_jobs
+
 
 
 app = Flask(__name__)
@@ -70,6 +72,26 @@ def match_job_api():
         "message": "Job matching completed",
         "resume_skills": resume_skills,
         "job_match": match_result
+    }), 200
+
+@app.route("/api/jobs/rank", methods=["POST"])
+def rank_jobs_api():
+    if "resume" not in request.files:
+        return jsonify({"error": "No resume uploaded"}), 400
+
+    file = request.files["resume"]
+
+    if not file.filename.lower().endswith(".pdf"):
+        return jsonify({"error": "Only PDF files are allowed"}), 400
+
+    resume_result = analyze_resume(file)
+    resume_skills = resume_result["skills"]
+
+    ranked_jobs = rank_resume_against_all_jobs(resume_skills)
+
+    return jsonify({
+        "message": "Job ranking completed",
+        "ranked_jobs": ranked_jobs
     }), 200
 
 
